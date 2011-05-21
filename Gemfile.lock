@@ -1,3 +1,9 @@
+GIT
+  remote: git://github.com/perrym5/ruby-libmpq.git
+  revision: 2f5dc15fbb40ee6e85e09f5795c8e776892395f4
+  specs:
+    ruby-libmpq (0.1.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -7,8 +13,6 @@ GEM
       git (>= 1.2.5)
       rake
     rake (0.8.7)
-    rcov (0.9.9)
-    shoulda (2.11.3)
 
 PLATFORMS
   ruby
@@ -16,5 +20,4 @@ PLATFORMS
 DEPENDENCIES
   bundler (~> 1.0.0)
   jeweler (~> 1.6.0)
-  rcov
-  shoulda
+  ruby-libmpq!
