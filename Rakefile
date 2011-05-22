@@ -17,8 +17,12 @@ Jeweler::Tasks.new do |gem|
   gem.name = "sc2parse"
   gem.homepage = "http://github.com/perrym5/sc2parse"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Ruby library to parse data from Starcraft II replay files}
+  gem.description = %Q{
+    Ruby library to parse data from Starcraft II replay files. Provides
+    and interface for reading data about Starcraft II games from their
+    replay files.
+  }
   gem.email = "perrym5@rpi.edu"
   gem.authors = ["Matthew Perry"]
   # dependencies defined in Gemfile
