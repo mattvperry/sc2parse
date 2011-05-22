@@ -1,15 +1,14 @@
 module SC2Parse
   class BitStream
-    attr_accessor :offset, :size
+    attr_reader :offset
 
     def initialize(data, offset = 0)
       @data = data
       @offset = offset
-      @size = data.length
     end
 
     def each
-      yield while @offset < @size
+      yield while @offset < @data.size
     end
 
     def peek
@@ -26,7 +25,7 @@ module SC2Parse
 
     def read_bytes(num)
       bytes = @data[@offset,num]
-      skip length
+      skip num
       bytes
     end
 
@@ -34,16 +33,16 @@ module SC2Parse
       read_bytes(num).unpack format
     end
 
-    def read_big_int
-      read_byte.unpack 'C'
+    def read_small_int
+      read_format(1, 'C').first
     end
 
-    def read_small_int
-      read_bytes(4).unpack 'L'
+    def read_big_int
+      read_format(4, 'L').first
     end
 
     def read_string(length)
-      read_bytes(length).unpack "A#{length}"
+      read_format(length, "A#{length}").first
     end
   end
 end

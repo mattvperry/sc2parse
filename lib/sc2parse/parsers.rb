@@ -1,1 +1,1 @@
-require 'parsers/replay_details'
+require 'lib/parsers/replay_details'

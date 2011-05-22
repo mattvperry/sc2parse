@@ -9,19 +9,28 @@ module SC2Parse
       "\x09" => :var_int,
     }
 
+    class MalformedData < Exception; end
+
     def self.restore(data, offset = 0)
       @@stream = BitStream.new data
-
       array = []
       @@stream.each { array << read }
       array
     end
 
+    def self.convert_to_int(blizz_int)
+      (blizz_int & 1) == 1 ? -(blizz_int >> 1) : (blizz_int >> 1)
+    end
+
     private
+    def self.next_type
+      byte = @@stream.read_byte
+      raise MalformedData, "Unknown type #{byte.inspect}" unless CODES[byte]
+      CODES[byte]
+    end
+
     def self.read
-      type = CODES[@@stream.read_byte]
-      raise Exception, "Malformed Data" unless type
-      send "#{type}".to_sym
+      send next_type
     end
 
     def self.small_int
@@ -33,33 +42,31 @@ module SC2Parse
     end
 
     def self.var_int
-      # TODO: Implement this...
+      byte = @@stream.read_small_int
+      value, shift = (byte & 0x7F), 1
+      until byte & 0x80 == 0
+        byte = @@stream.read_small_int
+        value += (byte & 0x7F) << (7 * shift)
+        shift += 1
+      end
+      convert_to_int value
     end
 
     def self.string
-      size = @@stream.read_small_int
-      read_bytes(size).unpack "A#{size}"
+      @@stream.read_string(small_int)
     end
 
     def self.array
-      skip 2 # Arrays have 2 pointless bytes at the start
+      @@stream.skip 2 # Arrays have 2 pointless bytes at the start
       array = []
-      @@stream.read_small_int.times do |i|
-        array << read
-      end
+      small_int.times { array << read }
       array
     end
 
     def self.hash
       hash = {}
-      @@stream.read_small_int.times do |i|
-        hash[@@stream.read_small_int] = read
-      end
+      small_int.times { hash[small_int] = read }
       hash
-    end
-
-    def self.convert_to_int(blizz_int)
-      (blizz_int & 1) ? -(blizz_int >> 1) : (blizz_int >> 1)
     end
   end
 end

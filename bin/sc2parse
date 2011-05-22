@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+lib_dir = File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib/'))
+$LOAD_PATH.unshift(lib_dir) unless $LOAD_PATH.include?(lib_dir)
+
+require 'sc2parse'
+require 'pp'
+
+replay = MPQ::Archive.new("/home/matthew/src/work/sc2challenge/sc2parse/test/fixtures/replay.sc2replay")
+pp SC2Parse::SerialData.restore(replay.read_file("replay.details"))
