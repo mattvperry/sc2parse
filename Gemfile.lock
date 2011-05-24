@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/perrym5/ruby-libmpq.git
-  revision: 2f5dc15fbb40ee6e85e09f5795c8e776892395f4
+  revision: 4ce1d19191d9956ee734a0a01e9ccf3fff287c4c
   specs:
-    ruby-libmpq (0.1.0)
+    ruby-libmpq (0.1.1)
 
 GEM
   remote: http://rubygems.org/

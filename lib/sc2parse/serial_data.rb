@@ -1,5 +1,5 @@
 module SC2Parse
-  class SerialData
+  module SerialData
     CODES = {
       "\x02" => :string,
       "\x04" => :array,
