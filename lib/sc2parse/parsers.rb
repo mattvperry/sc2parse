@@ -1,10 +1,10 @@
 module SC2Parse
-  class Replay
-    module Parsers
-      autoload :ReplayDetails, 'sc2parse/parsers/replay_details.rb'
-      autoload :ReplayInitdata, 'sc2parse/parsers/replay_initdata.rb'
+  module Parsers
+    autoload :ReplayDetails, 'sc2parse/parsers/replay_details.rb'
+    autoload :ReplayInitdata, 'sc2parse/parsers/replay_initdata.rb'
 
-      def self.parse(archive)
+    class << self
+      def parse(archive)
         parsed_files = {}
         archive.each_with_data do |name, data|
           parse_class = file_to_class name
@@ -14,7 +14,7 @@ module SC2Parse
       end
 
       private
-      def self.file_to_class(file)
+      def file_to_class(file)
         const = file.split('.').each { |f| f.capitalize! }.join('')
         return const_get(const) if const_defined?(const)
       end

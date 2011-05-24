@@ -1,12 +1,30 @@
 module SC2Parse
-  class Replay
-    module Parsers
-      class ReplayDetails
-        attr_reader :raw_data
+  module Parsers
+    class ReplayDetails
+      FIELDS = {
+        players: 0,
+        map_name: 1,
+        map_tga: 3,
+        game_start_time: 5,
+        timezone_offset: 6
+      }
 
-        def initialize(data)
-          @raw_data = SerialData.restore data
-        end
+      def initialize(data)
+        @data = SerialData.restore data
+      end
+
+      def players
+        # parse players seperately
+        @data[FIELDS[:players]]
+      end
+
+      def map_tga
+        @data[FIELDS[:map_tga]][0]
+      end
+
+      def method_missing(sym)
+        return @data[FIELDS[sym]] if FIELDS.has_key? sym
+        super
       end
     end
   end

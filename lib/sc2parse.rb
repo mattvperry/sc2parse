@@ -3,10 +3,9 @@ require 'libmpq'
 module SC2Parse
   autoload :BitStream, 'sc2parse/bitstream'
   autoload :SerialData, 'sc2parse/serial_data'
+  autoload :Parsers, 'sc2parse/parsers'
 
   class Replay
-    autoload :Parsers, 'sc2parse/parsers'
-
     def initialize(path)
       begin
         @archive = MPQ::Archive.new path
@@ -14,6 +13,12 @@ module SC2Parse
         raise LoadError, "Failed to load archive #{path.inspect}"
       end
       parse
+
+      # Debugging
+      require 'pp'
+      pp @parsed_files["replay.details"].players
+      pp @parsed_files["replay.details"].map_name
+      pp @parsed_files
     end
 
     private
